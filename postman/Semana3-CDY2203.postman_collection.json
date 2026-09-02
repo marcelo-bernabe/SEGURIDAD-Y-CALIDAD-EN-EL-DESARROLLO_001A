@@ -1,0 +1,242 @@
+{
+  "info": {
+    "name": "Semana3-CDY2203 - Eliminando vulnerabilidades",
+    "description": "Colección con las 11 peticiones del Paso 2: login (3 usuarios), pacientes (2.2 a 2.5) y citas (2.6 a 2.9).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8180" },
+    { "key": "token", "value": "" },
+    { "key": "patientId2", "value": "2" },
+    { "key": "patientIdToDelete", "value": "3" },
+    { "key": "appointmentId4", "value": "4" }
+  ],
+  "item": [
+    {
+      "name": "2.1 Login",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    pm.collectionVariables.set('token', pm.response.text());",
+                  "}",
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"Admin\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/login", "host": ["{{baseUrl}}"], "path": ["login"] }
+          }
+        },
+        {
+          "name": "Login - Editor",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"Editor\",\n  \"password\": \"editor123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/login", "host": ["{{baseUrl}}"], "path": ["login"] }
+          }
+        },
+        {
+          "name": "Login - Viewer",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"Viewer\",\n  \"password\": \"viewer123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/login", "host": ["{{baseUrl}}"], "path": ["login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pacientes",
+      "item": [
+        {
+          "name": "2.2 Crear paciente 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Firulais\",\n  \"species\": \"Perro\",\n  \"breed\": \"Labrador\",\n  \"age\": 3,\n  \"owner\": \"Juan Perez\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/patient", "host": ["{{baseUrl}}"], "path": ["patient"] }
+          }
+        },
+        {
+          "name": "2.2 Crear paciente 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Michi\",\n  \"species\": \"Gato\",\n  \"breed\": \"Siames\",\n  \"age\": 2,\n  \"owner\": \"Maria Lopez\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/patient", "host": ["{{baseUrl}}"], "path": ["patient"] }
+          }
+        },
+        {
+          "name": "2.2 Crear paciente 3",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Rocky\",\n  \"species\": \"Perro\",\n  \"breed\": \"Bulldog\",\n  \"age\": 5,\n  \"owner\": \"Pedro Soto\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/patient", "host": ["{{baseUrl}}"], "path": ["patient"] }
+          }
+        },
+        {
+          "name": "2.3 Obtener lista de todos los pacientes",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/patient", "host": ["{{baseUrl}}"], "path": ["patient"] }
+          }
+        },
+        {
+          "name": "2.4 Obtener paciente con ID 2",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/patient/{{patientId2}}", "host": ["{{baseUrl}}"], "path": ["patient", "{{patientId2}}"] }
+          }
+        },
+        {
+          "name": "2.5 Borrar 1 paciente",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/patient/{{patientIdToDelete}}", "host": ["{{baseUrl}}"], "path": ["patient", "{{patientIdToDelete}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Citas",
+      "item": [
+        {
+          "name": "2.6 Crear cita 1",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-01\",\n  \"time\": \"09:00:00\",\n  \"reason\": \"Control anual\",\n  \"veterinarian\": \"Dra. Fernanda Rios\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointment", "host": ["{{baseUrl}}"], "path": ["appointment"] }
+          }
+        },
+        {
+          "name": "2.6 Crear cita 2",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-02\",\n  \"time\": \"10:30:00\",\n  \"reason\": \"Vacuna\",\n  \"veterinarian\": \"Dr. Carlos Munoz\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointment", "host": ["{{baseUrl}}"], "path": ["appointment"] }
+          }
+        },
+        {
+          "name": "2.6 Crear cita 3",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-03\",\n  \"time\": \"11:15:00\",\n  \"reason\": \"Desparasitacion\",\n  \"veterinarian\": \"Dra. Fernanda Rios\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointment", "host": ["{{baseUrl}}"], "path": ["appointment"] }
+          }
+        },
+        {
+          "name": "2.6 Crear cita 4",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "{{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-04\",\n  \"time\": \"16:00:00\",\n  \"reason\": \"Cirugia menor\",\n  \"veterinarian\": \"Dr. Carlos Munoz\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointment", "host": ["{{baseUrl}}"], "path": ["appointment"] }
+          }
+        },
+        {
+          "name": "2.7 Obtener lista de todas las citas",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/appointment", "host": ["{{baseUrl}}"], "path": ["appointment"] }
+          }
+        },
+        {
+          "name": "2.8 Obtener cita con ID 4",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/appointment/{{appointmentId4}}", "host": ["{{baseUrl}}"], "path": ["appointment", "{{appointmentId4}}"] }
+          }
+        },
+        {
+          "name": "2.9 Borrar cita 1",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/appointment/1", "host": ["{{baseUrl}}"], "path": ["appointment", "1"] }
+          }
+        },
+        {
+          "name": "2.9 Borrar cita 2",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "Authorization", "value": "{{token}}" } ],
+            "url": { "raw": "{{baseUrl}}/appointment/2", "host": ["{{baseUrl}}"], "path": ["appointment", "2"] }
+          }
+        }
+      ]
+    }
+  ]
+}
